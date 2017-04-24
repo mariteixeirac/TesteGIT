@@ -1,0 +1,3 @@
+Aluno: Seu Nome
+1-enviar o comando necessario para exibir todas as linhas com o ip 200.19.168.148 no arquivo access.log
+
