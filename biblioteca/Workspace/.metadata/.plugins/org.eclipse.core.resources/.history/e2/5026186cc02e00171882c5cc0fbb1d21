@@ -1,0 +1,139 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import modelo.Exemplar;
+import modelo.Usuario;
+
+public class ExemplarDAO implements InterfaceExemplarDAO 
+{
+	private Connection conexao;
+	
+	public ExemplarDAO(Connection _conexao)
+	{
+		this.conexao = _conexao;
+	}
+	
+	@Override
+	public void inserir(Exemplar _exemplar) throws SQLException
+	{
+		String comando = "insert into exemplar (cod_exemplar, disponivel) " 
+		+ "values (?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _exemplar.getCod_exemplar());
+		ps.setBoolean(2, _exemplar.isDisponivel());
+		
+		ps.execute();
+	}
+
+	@Override
+	public Boolean deletar(int _cod_exemplar) throws SQLException 
+	{
+		String comando = "delete from exemplar where cod_exemplar = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod_exemplar);
+		
+		return ps.execute();
+	}
+
+	@Override
+	public Boolean atualizar(Exemplar _exemplar) throws SQLException 
+	{
+		String comando = "update exemplar set "
+				       + "disponibilidade = ?"
+				       + "where cod_exemplar = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setBoolean(1, exemplar.isDisponivel());		
+		ps.setInt(2, exemplar.getCod_exemplar());
+
+		return ps.execute();
+	}
+
+	@Override
+	public Exemplar buscarPorCod(int cod_exemplar) throws SQLException 
+	{
+		Exemplar e = null;
+		
+		String comando = "select * from exemplar where cod_exemplar = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, cod_exemplar);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) 
+		{
+			e = new Exemplar();
+			e.setCod_exemplar(rs.getInt(1));
+			e.setDisponivel(rs.getBoolean(2));
+		}
+		return e;
+	}
+
+	@Override
+	public List<Exemplar> listarTodos() throws SQLException {
+		
+		List<Exemplar> listaExemplar = new ArrayList<Exemplar>();
+		
+		String comando = "select * from exemplar";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) 
+		{
+			Exemplar e = new Exemplar();
+			e.setCod_exemplar(rs.getInt(1));
+			e.setDisponivel(rs.getBoolean(2));
+			
+			listaExemplar.add(e);
+		}
+		
+		return listaExemplar;
+	}
+	
+	/*@Override
+	public List<Exemplar> buscarExemplarDoLivro(int cod_livro) throws SQLException 
+	{
+		
+		List<Exemplar> listaEnderecos = new ArrayList<Exemplar>();
+		
+		String comando = "select * from exemplar where cod_livro = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, cod_livro);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) 
+		{
+			Exemplar e = new Exemplar();
+			e.setId(rs.getInt(1));
+			e.setEstado(rs.getString(2));
+			e.setCidade(rs.getString(3));
+			e.setBairro(rs.getString(4));
+			e.setLogrodouro(rs.getString(5));
+			e.setCep(rs.getString(6));
+			e.setIdPessoa(rs.getInt(7));//ACRESCENTADO
+			
+			listaEnderecos.add(e);
+		}
+		
+		return listaEnderecos;
+	}*/
+
+}

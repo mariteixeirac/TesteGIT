@@ -1,0 +1,17 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=C\:/Users/Lenovo/Desktop/Unilasalle/5_periodo/des_web_cam/eclipse-jee-neon-2-win32-x86_64/eclipse/
+org.eclipse.jdt.core.classpathVariable.JRE_LIB=C\:/Program Files/Java/jre1.8.0_121/lib/rt.jar
+org.eclipse.jdt.core.classpathVariable.JRE_SRC=
+org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
+org.eclipse.jdt.core.classpathVariable.JUNIT_HOME=C\:/Users/Lenovo/Desktop/Unilasalle/5_periodo/des_web_cam/eclipse-jee-neon-2-win32-x86_64/eclipse/plugins/org.junit_4.12.0.v201504281640/
+org.eclipse.jdt.core.classpathVariable.M2_REPO=C\:/Users/Lenovo/.m2/repository
+org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
+org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.8
+org.eclipse.jdt.core.compiler.compliance=1.8
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
+org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
+org.eclipse.jdt.core.compiler.source=1.8
+org.eclipse.jdt.core.userLibrary.JSF-2.2.8=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<userlibrary systemlibrary\="true" version\="2">\r\n\t<archive path\="C\:/Users/26007051/Downloads/libs/javax.faces-2.2.8.jar" sourceattachment\="C\:/Users/26007051/Downloads/libs/javax.faces-2.2.8-sources.jar"/>\r\n</userlibrary>\r\n
+org.eclipse.jdt.core.userLibrary.PostgreSQL-9.4=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<userlibrary systemlibrary\="true" version\="2">\r\n\t<archive path\="C\:/Users/Lenovo/Desktop/Unilasalle/5_periodo/des_web_cam/libs/postgresql-9.4.1212.jar"/>\r\n</userlibrary>\r\n
+org.eclipse.jdt.core.userLibrary.Primefaces-5.3=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<userlibrary systemlibrary\="true" version\="2">\r\n\t<archive path\="C\:/Users/26007051/Downloads/libs/all-themes-1.0.10.jar"/>\r\n\t<archive path\="C\:/Users/26007051/Downloads/libs/primefaces-5.3.jar" sourceattachment\="C\:/Users/26007051/Downloads/libs/primefaces-5.3-sources.jar"/>\r\n</userlibrary>\r\n

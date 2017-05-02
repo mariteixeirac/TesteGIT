@@ -1,0 +1,16 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import modelo.Reserva;
+
+public interface InterfaceReversaDAO 
+{
+	public void inserir(Reserva _reserva) throws SQLException;
+	public Boolean deletar(int _cod_reserva) throws SQLException;
+	public Boolean atualizar(Reserva _reserva) throws SQLException;
+	public Reserva buscarPorID(int _cod_reserva) throws SQLException;
+	public List<Reserva> listarTodos() throws SQLException;
+	public List<Reserva> buscarReservaDoUsuario(int _cod_reserva) throws SQLException;
+}

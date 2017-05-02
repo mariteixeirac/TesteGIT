@@ -1,0 +1,13 @@
+trabalho de des_web_camadas:
+camadas de dados e modelo 
+
+MER
+
+
+Lista - (eclipse)
+ livro -> usuario
+ livro -> exemplar
+ usuario -> reserva
+ usuario -> preferencia
+ reserva -> exemplar
+ 

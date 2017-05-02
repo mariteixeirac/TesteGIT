@@ -1,0 +1,133 @@
+package modelo;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Livro implements Serializable
+{
+
+	private static final long serialVersionUID = 1L;
+	
+	private int cod_livro;
+	private int volume;
+	private String titulo;
+	private String descricao;
+	private String autor;
+	private String editora;
+	private String genero;
+	private List<Exemplar> exemplares;
+	
+	// --------------------Métodos--------------------------
+	
+	public Livro()
+	{
+		this.exemplares = new ArrayList<Exemplar>();
+	}
+	
+	public Livro(int cod_livro, int volume, String titulo, String descricao, String autor, String editora, String genero, List<Usuario> usuarios, List<Exemplar> exemplares)
+	{
+		super();
+		
+		this.cod_livro = cod_livro;
+		this.volume = volume;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.autor = autor;
+		this.editora = editora;
+		this.genero = genero;
+		this.usuarios = usuarios;
+		this.exemplares = exemplares;
+	}
+
+	//Set and Get
+
+	public int getCod_livro() 
+	{
+		return cod_livro;
+	}
+
+	public void setCod_livro(int cod_livro) 
+	{
+		this.cod_livro = cod_livro;
+	}
+
+	public int getVolume()
+	{
+		return volume;
+	}
+
+	public void setVolume(int volume)
+	{
+		this.volume = volume;
+	}
+
+	public String getTitulo()
+	{
+		return titulo;
+	}
+
+	public void setTitulo(String titulo)
+	{
+		this.titulo = titulo;
+	}
+
+	public String getDescricao()
+	{
+		return descricao;
+	}
+
+	public void setDescricao(String descricao)
+	{
+		this.descricao = descricao;
+	}
+
+	public String getAutor()
+	{
+		return autor;
+	}
+
+	public void setAutor(String autor)
+	{
+		this.autor = autor;
+	}
+
+	public String getEditora()
+	{
+		return editora;
+	}
+
+	public void setEditora(String editora)
+	{
+		this.editora = editora;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero)
+	{
+		this.genero = genero;
+	}
+
+	public List<Exemplar> getExemplares() {
+		return exemplares;
+	}
+
+	public void setExemplares(List<Exemplar> exemplares) {
+		this.exemplares = exemplares;
+	}
+	
+	// adicionar e remover listas
+	
+	public void AdicionarExemplar(Exemplar exemplar) 
+	{
+		this.exemplares.add(exemplar);
+	}
+	
+	public void RemoverExemplar(Exemplar exemplar) 
+	{
+		this.exemplares.remove(exemplar);
+	}
+}

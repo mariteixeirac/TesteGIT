@@ -1,0 +1,43 @@
+package modelo;
+
+import java.io.Serializable;
+
+public class Exemplar implements Serializable 
+{
+	
+	private static final long serialVersionUID = 1L;
+	
+	private int cod_exemplar;
+	private boolean disponivel;
+
+	// --------------------Métodos--------------------------
+	
+	public Exemplar(int cod_exemplar, boolean disponivel) 
+	{		
+		this.cod_exemplar = cod_exemplar;
+		this.disponivel = disponivel;
+	}
+	
+	//Set and Get
+
+	public int getCod_exemplar() 
+	{
+		return cod_exemplar;
+	}
+
+	public void setCod_exemplar(int cod_exemplar) 
+	{
+		this.cod_exemplar = cod_exemplar;
+	}
+
+	public boolean isDisponivel() 
+	{
+		return disponivel;
+	}
+
+	public void setDisponivel(boolean disponivel) 
+	{
+		this.disponivel = disponivel;
+	}
+
+}

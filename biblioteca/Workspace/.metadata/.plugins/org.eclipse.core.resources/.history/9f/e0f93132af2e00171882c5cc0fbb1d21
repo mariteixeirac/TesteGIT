@@ -1,0 +1,192 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import modelo.Endereco;
+import modelo.Usuario;
+
+public class UsuarioDAO implements InterfaceUsuarioDAO 
+{
+
+	private Connection conexao;
+	
+	public UsuarioDAO(Connection conexao) 
+	{
+		this.conexao = conexao;
+	}
+	
+	@Override
+	public void inserir(Usuario usuario) throws SQLException 
+	{
+		
+		String comando = "insert into usuario (cod_usuario, cpf, idade, telefone, nome, email, reservas, preferencias) " 
+		+ "values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, usuario.getCod_usuario());
+		ps.setInt(2, usuario.getCpf());
+		ps.setInt(3, usuario.getIdade());
+		ps.setInt(4, usuario.getTelefone());
+		ps.setString(5, usuario.getNome());
+		ps.setString(6, usuario.getEmail());
+		
+		ps.execute();
+		
+		for (Usuario item : usuario.getReservas()) 
+		{
+			
+			ReservaDAO daoReserva = new ReservaDAO(this.conexao);
+			daoReserva.inserir(item);		
+		}
+		
+		for (Usuario item : usuario.getPreferencias()) 
+		{
+			
+			PreferenciaDAO daoPreferencias = new PreferenciaDAO(this.conexao);
+			daoPreferencias.inserir(item);		
+		}
+
+	}
+
+	@Override
+	public Boolean deletar(int cod_usuario) throws SQLException 
+	{
+		
+		String comando = "delete from usuario where cod_usuario = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, cod_usuario);
+		
+		return ps.execute();
+	}
+
+	@Override
+	public Boolean atualizar(Usuario usuario) throws SQLException 
+	{		
+		String comando = "update usuario set "
+				+ "cpf = ?, "
+				+ "telefone = ?, "
+				+ "nome = ?, "
+				+ "email = ? "
+				+ "where cod_usuario = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, usuario.getCpf());
+		ps.setInt(2, usuario.getTelefone());
+		ps.setString(3, usuario.getNome());
+		ps.setString(4, usuario.getEmail());
+		
+		ps.setInt(5, usuario.getCod_usuario());
+
+		return ps.execute();
+	}
+
+	@Override
+	public Usuario buscarPorCod(int _cod) throws SQLException 
+	{
+		
+		Usuario u = null;
+		
+		String comando = "select * from usuario where cod_usuario = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) 
+		{
+			u = new Usuario();
+			u.setCod_usuario(rs.getInt(1));
+			u.setCpf(rs.getInt(2));
+			u.setIdade(rs.getInt(3));
+			u.setTelefone(rs.getInt(4));
+			u.setNome(rs.getString(5));
+			u.setEmail(rs.getString(6));
+			
+			ReservaDAO daoReserva = new ReservaDAO(this.conexao);
+			List<Reserva> reservas = daoReserva.buscarReservaDoUsuario(u.getCod_usuario());
+			u.setReservas(reservas);
+			
+			PreferenciaDAO daoPreferencia = new PreferenciaDAO(this.conexao);
+			List<Preferencia> preferencias = daoPreferencia.buscarPreferenciaDoUsuario(u.getCod_usuario());
+			u.setPreferencias(preferencias);
+		}
+		
+		return u;
+	}
+
+	@Override
+	public List<Usuario> listarTodos() throws SQLException 
+	{
+		
+		List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		
+		String comando = "select * from usuario";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) 
+		{			
+			int cod_usuario = rs.getInt(1);
+			int cpf = rs.getInt(2);
+			int idade = rs.getInt(3);
+			int telefone = rs.getInt(4);
+			String nome = rs.getString(5);
+			String email = rs.getString(6);
+						
+			ReservaDAO daoReserva = new ReservaDAO(this.conexao);
+			List<Reserva> reservas = daoReserva.buscarReservaDoUsuario(cod_usuario);
+			
+			PreferenciaDAO daoPreferencia = new PreferenciaDAO(this.conexao);
+			List<Preferencia> preferencias = daoPreferencia.buscarPreferenciaDoUsuario(cod_usuario);
+			
+			listaUsuarios.add(new Usuario(cod_usuario, cpf, idade, telefone, nome, email, reservas, preferencias));//VOLTAR AQUI
+		}
+		
+		return listaUsuarios;
+	}
+	
+	@Override
+	public List<Usuario> buscarEnderecosDaUsuario(Usuario usuario) throws SQLException 
+	{
+		
+		List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		
+		String comando = "select * from endereco where idPessoa = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _idPessoa);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+
+			Endereco e = new Endereco();
+			e.setId(rs.getInt(1));
+			e.setEstado(rs.getString(2));
+			e.setCidade(rs.getString(3));
+			e.setBairro(rs.getString(4));
+			e.setLogrodouro(rs.getString(5));
+			e.setCep(rs.getString(6));
+			e.setIdPessoa(rs.getInt(7));//ACRESCENTADO
+			
+			listaEnderecos.add(e);
+		}
+		
+		return listaEnderecos;
+	}
+
+}

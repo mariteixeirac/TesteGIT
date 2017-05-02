@@ -1,0 +1,86 @@
+package modelo;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Reserva implements Serializable 
+{
+	
+	private static final long serialVersionUID = 1L;
+		
+	private int cod_reserva;
+	private Date data_ini;
+	private Date data_fim;
+	private List<Exemplar> exemplares;
+		
+	// --------------------Metodos--------------------------
+		
+	public Reserva()
+	{
+		this.exemplares = new ArrayList<Exemplar>();
+	}
+		
+	public Reserva(int cod_reserva, Date data_ini, Date data_fim, List<Exemplar> exemplares)
+	{
+		super();
+		
+		this.cod_reserva = cod_reserva;
+		this.data_ini = data_ini;
+		this.data_fim = data_fim;
+		this.exemplares = exemplares;
+	}
+
+	//Set and Get
+
+	public int getCod_reserva()
+	{
+		return cod_reserva;
+	}
+		
+	public void setCod_reserva(int cod_reserva) 
+	{
+			this.cod_reserva = cod_reserva;
+	}
+
+	public Date getData_ini() 
+	{
+			return data_ini;
+	}
+
+	public void setData_ini(Date data_ini)
+	{
+		this.data_ini = data_ini;
+	}
+
+	public Date getData_fim() 
+	{
+		return data_fim;
+	}
+
+	public void setData_fim(Date data_fim)
+	{
+		this.data_fim = data_fim;
+	}
+
+	public List<Exemplar> getExemplares()
+	{
+			return exemplares;
+	}
+
+	public void setExemplares(List<Exemplar> exemplares)
+	{
+		this.exemplares = exemplares;
+	}
+	
+	public void AdicionarExemplar(Exemplar exemplar)
+	{
+		this.exemplares.add(exemplar);
+	}
+	
+	public void RemoverExemplar(Exemplar exemplar) 
+	{
+		this.exemplares.remove(exemplar);
+	}
+}

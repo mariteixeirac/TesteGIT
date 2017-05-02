@@ -1,0 +1,107 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import modelo.Preferencia;
+
+public class PreferenciaDAO implements InterfacePreferenciaDAO 
+{
+private Connection conexao;
+	
+	public PreferenciaDAO(Connection conexao)
+	{
+		this.conexao = conexao;
+	}
+	
+	@Override
+	public void inserir(Preferencia preferencia) throws SQLException
+	{
+		String comando = "insert into preferencia (cod_preferencia, resposta)" + "values (?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, preferencia.getCod_preferencia());
+		ps.setString(2,preferencia.getResposta());
+		
+		ps.execute();
+	}
+
+	@Override
+	public Boolean deletar(int cod_preferencia) throws SQLException 
+	{
+		String comando = "delete from preferencia where cod_preferencia = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, cod_preferencia);
+		
+		return ps.execute();
+	}
+
+	@Override
+	public Boolean atualizar(Preferencia preferencia) throws SQLException 
+	{
+		String comando = "update preferencia set "
+					   + "resposta = ?"
+					   + "where cod_preferencia = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setString(1, preferencia.getResposta());		
+		ps.setInt(2, preferencia.getCod_preferencia());
+
+		return ps.execute();
+	}
+
+	@Override
+	public Preferencia buscarPorCod(int cod_preferencia) throws SQLException 
+	{
+		Preferencia p = null;
+		
+		String comando = "select * from preferencia where cod_preferencia = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, cod_preferencia);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) 
+		{
+			p = new Preferencia();
+			p.setCod_preferencia(rs.getInt(1));
+			p.setResposta(rs.getString(2));
+		}
+		return p;
+	}
+
+	@Override
+	public List<Preferencia> listarTodos() throws SQLException 
+	{
+		
+		List<Preferencia> listaPreferencias = new ArrayList<Preferencia>();
+		
+		String comando = "select * from preferencia";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) 
+		{
+			Preferencia p = new Preferencia();
+			p.setCod_preferencia(rs.getInt(1));
+			p.setResposta(rs.getString(2));
+			
+			listaPreferencias.add(p);
+		}
+		
+		return listaPreferencias;
+	}
+	
+}

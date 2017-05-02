@@ -1,0 +1,104 @@
+package dao;
+
+import modelo.Reserva;
+import modelo.Usuario;
+
+public class ReservaDAO 
+{
+	public ReservaDAO(Connection _conexao) 
+	{
+		this.Reserva = _conexao;
+	}
+	
+	@Override
+	public void inserir(Reserva _reserva) throws SQLException
+	{
+		String comando = "insert into reserva (cod_reserva, data_ini, data_fim, exemplares) " 
+					   + "values (?, ?, ?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+				
+		ps.setInt(1, _reserva.getCod_reserva());
+		ps.setDate(2, _reserva.getData_ini());
+		ps.setDate(3, _reserva.getData_fim());
+				
+		ps.execute();
+				
+		for (Reserva item : _reserva.getExemplares()) 
+		{
+			ExemplarDAO daoExemplares = new ExemplarDAO(this.conexao);
+			daoExemplares.inserir(item);		
+		}
+	}
+	
+	@Override
+	public Boolean deletar(int _cod_reserva) throws SQLException
+	{
+		String comando = "delete from reserva where cod_reserva = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod_reserva);
+		
+		return ps.execute();
+	}
+	
+	@Override
+	public Boolean atualizar(Reserva _reserva) throws SQLException
+	{
+		String comando = "update reserva set "
+				+ "data_ini = ?, "
+				+ "data_fim = ?, "
+				+ "where cod_reserva = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setDate(1, _reserva.getData_ini());
+		ps.setDate(2, _reserva.getData_fim());
+		
+		ps.setInt(3, _reserva.getCod_reserva());
+
+		return ps.execute();
+	}
+	
+	@Override
+	public Reserva buscarPorID(int _cod_reserva) throws SQLException
+	{
+		Reserva r = null;
+		
+		String comando = "select * from reserva where cod_reserva = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod_reserva);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) 
+		{
+			u = new Usuario();
+			u.setCod_usuario(rs.getInt(1));
+			u.setCpf(rs.getInt(2));
+			u.setIdade(rs.getInt(3));
+			u.setTelefone(rs.getInt(4));
+			u.setNome(rs.getString(5));
+			u.setEmail(rs.getString(6));
+			
+			ReservaDAO daoReserva = new ReservaDAO(this.conexao);
+			List<Reserva> reservas = daoReserva.buscarReservaDoUsuario(u.getCod_usuario());
+			u.setReservas(reservas);
+			
+			PreferenciaDAO daoPreferencia = new PreferenciaDAO(this.conexao);
+			List<Preferencia> preferencias = daoPreferencia.buscarPreferenciaDoUsuario(u.getCod_usuario());
+			u.setPreferencias(preferencias);
+		}
+		
+		return u;
+	}
+	
+	@Override
+	public List<Reserva> listarTodos() throws SQLException;
+	
+	@Override
+	public List<Reserva> buscarReservaDoUsuario(int cod_reserva) throws SQLException;
+}

@@ -1,0 +1,51 @@
+package dao;
+
+import modelo.Reserva;
+import modelo.Usuario;
+
+public class ReservaDAO 
+{
+	public ReservaDAO(Connection conexao) 
+	{
+		this.Reserva = conexao;
+	}
+	
+	@Override
+	public void inserir(Reserva reserva) throws SQLException
+	{
+		String comando = "insert into reserva (cod_reserva, data_ini, data_fim, exemplares) " 
+					   + "values (?, ?, ?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+				
+		ps.setInt(1, reserva.getCod_reserva());
+		ps.setDate(2, reserva.getData_ini());
+		ps.setDate(3, reserva.getData_fim());
+				
+		ps.execute();
+				
+		for (Reserva item : reserva.getExemplares()) 
+		{
+			ExemplarDAO daoExemplares = new ExemplarDAO(this.conexao);
+			daoExemplares.inserir(item);		
+		}
+	}
+	
+	@Override
+	public Boolean deletar(int cod_reserva) throws SQLException
+	{
+		
+	}
+	
+	@Override
+	public Boolean atualizar(Reserva reserva) throws SQLException;
+	
+	@Override
+	public Reserva buscarPorID(int cod_reserva) throws SQLException;
+	
+	@Override
+	public List<Reserva> listarTodos() throws SQLException;
+	
+	@Override
+	public List<Reserva> buscarReservaDoUsuario(int cod_reserva) throws SQLException;
+}

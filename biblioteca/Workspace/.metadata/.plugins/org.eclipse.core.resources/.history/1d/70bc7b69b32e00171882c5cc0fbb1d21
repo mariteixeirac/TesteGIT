@@ -1,0 +1,16 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import modelo.Preferencia;
+
+public interface InterfacePreferenciaDAO 
+{
+	public void inserir(Preferencia preferencia) throws SQLException;
+	public Boolean deletar(int cood_preferencia) throws SQLException;
+	public Boolean atualizar(Preferencia preferencia) throws SQLException;
+	public Preferencia buscarPorCod(int cod_preferencia) throws SQLException;
+	public List<Preferencia> listarTodos() throws SQLException;
+	public List<Preferencia> buscarPreferenciaDoUsuario(int cod_usuario) throws SQLException;
+}

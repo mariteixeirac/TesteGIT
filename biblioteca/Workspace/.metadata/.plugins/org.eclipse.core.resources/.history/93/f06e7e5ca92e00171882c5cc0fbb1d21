@@ -1,0 +1,33 @@
+package modelo;
+
+public class Preferencia
+{
+	private int cod_preferencia;
+	private String resposta;
+
+	// --------------------Métodos--------------------------	
+	public Preferencia(int cod_preferencia, String resposta) 
+	{
+		this.cod_preferencia = cod_preferencia;
+		this.resposta = resposta;
+	}
+
+	//Set and Get
+
+	public int getCod_preferencia() {
+		return cod_preferencia;
+	}
+
+	public void setCod_preferencia(int cod_preferencia) {
+		this.cod_preferencia = cod_preferencia;
+	}
+
+	public String getResposta() {
+		return resposta;
+	}
+
+	public void setResposta(String resposta) {
+		this.resposta = resposta;
+	}
+
+}

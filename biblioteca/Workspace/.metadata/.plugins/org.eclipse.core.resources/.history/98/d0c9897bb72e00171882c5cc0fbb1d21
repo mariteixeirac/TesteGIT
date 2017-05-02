@@ -1,0 +1,157 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import modelo.Exemplar;
+import modelo.Livro;
+import modelo.String;
+import modelo.Usuario;
+
+public class LivroDAO 
+{
+	private Connection conexao;
+	
+	public LivroDAO(Connection _conexao)
+	{
+		this.conexao = _conexao;
+	}
+	
+	@Override
+	public void inserir(Livro _livro) throws SQLException
+	{
+		String comando = "insert into livro (cod_livro, volume, titulo, descricao, autor, editora, genero)" 
+					   + "values (?, ?, ?, ?, ?, ?, ?)";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _livro.getCod_livro());
+		ps.setInt(2, _livro.getVolume());
+		ps.setString(3, _livro.getTitulo());
+		ps.setString(4, _livro.getDescricao());
+		ps.setString(5, _livro.getAutor());
+		ps.setString(6, _livro.getEditora());
+		ps.setString(7, _livro.getGenero());
+		
+		ps.execute();
+		
+		for (Livro item : _livro.getExemplares()) 
+		{
+			
+			ExemplarDAO daoExemplar = new ExemplarDAO(this.conexao);
+			daoExemplar.inserir(item);		
+		}
+	}
+
+	@Override
+	public Boolean deletar(int _cod_livro) throws SQLException 
+	{
+		
+		String comando = "delete from livro where cod_livro = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod_livro);
+		
+		return ps.execute();
+	}
+
+	@Override
+	public Boolean atualizar(Livro _livro) throws SQLException 
+	{		
+		String comando = "update livro set "
+					   + "volume = ?, "
+					   + "titulo = ?, "
+					   + "descricao = ?, "
+					   + "autor = ?"
+					   + "editora = ? "
+					   + "genero = ? "
+					   + "where cod_livro = ?";
+
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _livro.getVolume());
+		ps.setString(2, _livro.getTitulo());
+		ps.setString(3, _livro.getDescricao());
+		ps.setString(4, _livro.getAutor());
+		ps.setString(5, _livro.getEditora());
+		ps.setString(6, _livro.getGenero());
+		
+		ps.setInt(7, _livro.getCod_livro());
+
+		return ps.execute();
+	}
+
+	@Override
+	public Usuario buscarPorCod(int _cod) throws SQLException 
+	{
+		Livro l= null;
+		
+		String comando = "select * from livro where cod_livro = ?";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ps.setInt(1, _cod);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) 
+		{
+			l = new Livro();
+			l.setCod_livro(rs.getInt(1));
+			l.setVolume(rs.getInt(2));
+			l.setTitulo(rs.getString(3));
+			l.setDescricao(rs.getString(4));
+			l.setAutor(rs.getString(5));
+			l.setEditora(rs.getString(6));
+			l.setGenero(rs.getString(7));
+			
+			ExemplarDAO daoExemplar = new ExemplarDAO(this.conexao);
+			List<Exemplar> exemplares = daoExemplar.buscarExemplarDeLivro(l.getCod_livro());
+			l.setExemplares(exemplares);
+			
+			PreferenciaDAO daoPreferencia = new PreferenciaDAO(this.conexao);
+			List<Preferencia> preferencias = daoPreferencia.buscarPreferenciaDoUsuario(u.getCod_usuario());
+			u.setPreferencias(preferencias);
+		}
+		
+		return u;
+	}
+
+	@Override
+	public List<Usuario> listarTodos() throws SQLException 
+	{
+		List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+		
+		String comando = "select * from usuario";
+		
+		PreparedStatement ps = this.conexao.prepareStatement(comando);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) 
+		{			
+			int cod_usuario = rs.getInt(1);
+			int cpf = rs.getInt(2);
+			int idade = rs.getInt(3);
+			int telefone = rs.getInt(4);
+			String nome = rs.getString(5);
+			String email = rs.getString(6);
+						
+			ReservaDAO daoReserva = new ReservaDAO(this.conexao);
+			List<Reserva> reservas = daoReserva.buscarReservaDoUsuario(cod_usuario);
+			
+			PreferenciaDAO daoPreferencia = new PreferenciaDAO(this.conexao);
+			List<Preferencia> preferencias = daoPreferencia.buscarPreferenciaDoUsuario(cod_usuario);
+			
+			listaUsuarios.add(new Usuario(cod_usuario, cpf, idade, telefone, nome, email, reservas, preferencias));//VOLTAR AQUI
+		}
+		
+		return listaUsuarios;
+	}
+
+}

@@ -1,0 +1,51 @@
+package modelo;
+
+import java.util.List;
+
+public class Ex_Reservado 
+{
+	private int cod_exReservado;
+	private List<Reserva> reservas;
+	private List<Exemplar> exemplares;
+	
+	// --------------------Métodos--------------------------
+
+	public Ex_Reservado (int cod_exReservado, List<Reserva> reservas, List<Exemplar> exemplares)
+	{
+		this.cod_exReservado = cod_exReservado;
+		this.reservas = reservas;
+		this.exemplares = exemplares;
+	}
+	
+	//Set and Get
+	public int getCod_exReservado() 
+	{
+		return cod_exReservado;
+	}
+
+	public void setCod_busca(int cod_exReservado)
+	{
+		this.cod_exReservado = cod_exReservado;
+	}
+	
+	public List<Reserva> getReservas() 
+	{
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas)
+	{
+		this.reservas = reservas;
+	}
+
+	public List<Exemplar> getExemplares() 
+	{
+		return exemplares;
+	}
+
+	public void setExemplares(List<Exemplar> exemplares)
+	{
+		this.exemplares = exemplares;
+	}
+
+}
